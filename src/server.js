@@ -12,6 +12,7 @@ import projectRoutes from './routes/projectRoutes.js';
 import auditTypeRoutes from './routes/auditTypeRoutes.js';
 import auditProgramRoutes from './routes/auditProgramRoutes.js';
 import auditPlanRoutes from "./routes/auditPlanRoutes.js"
+import auditInstanceRoutes from './routes/auditInstanceRoutes.js';
 const port = config.port;
 const app = express();
 // Middleware
@@ -27,6 +28,7 @@ app.use('/api/projects', projectRoutes);
 app.use('/api/audit-types', auditTypeRoutes);
 app.use('/api/audit-programs', auditProgramRoutes);
 app.use("/api/audit-plans", auditPlanRoutes);
+app.use('/api/audit-instances', auditInstanceRoutes);
 
 
 
