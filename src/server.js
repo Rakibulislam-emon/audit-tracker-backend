@@ -6,7 +6,7 @@ import config from "./config/config.js";
 import connectDB from "./config/db.js";
 // import routes
 import  userRoutes from "./routes/userRoutes.js"
-
+import groupCompanyRoutes from "./routes/groupCompanyRoutes.js"
 const port = config.port;
 const app = express();
 // Middleware
@@ -16,6 +16,17 @@ app.use(express.json()); // Parse JSON bodies
 connectDB();
 // Routes
 app.use("/api/users", userRoutes);
+app.use("/api/group-companies",groupCompanyRoutes)
+
+
+
+
+
+
+
+
+
+
 
 
 app.get("/", (req, res) => {

@@ -7,7 +7,17 @@ const router = express.Router();
 // @desc    Register a new user
 // @route   POST /api/users/register
 // @access  only admins
-router.post("/register", registerUser);
+router.post("/register", auth,(req,res,next)=>{
+  // check role
+  if(req.user.role !== "admin" && req.user.role !== "sysadmin"){
+    return res.status(403).json({message:"access denied, only admins can register new users"});
+  }
+  // if authorized, proceed to controller
+  registerUser(req,res,next);
+});
+
+
+
 // @desc    Login user and get token
 // @route   POST /api/users/login
 // @access  Public
