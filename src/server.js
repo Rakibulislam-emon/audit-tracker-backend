@@ -8,7 +8,7 @@ import connectDB from "./config/db.js";
 import  userRoutes from "./routes/userRoutes.js"
 import groupCompanyRoutes from "./routes/groupCompanyRoutes.js"
 import sisterConcernRoutes from './routes/sisterConcernRoutes.js';
-
+import projectRoutes from './routes/projectRoutes.js';
 
 const port = config.port;
 const app = express();
@@ -21,6 +21,7 @@ connectDB();
 app.use("/api/users", userRoutes);
 app.use("/api/group-companies",groupCompanyRoutes)
 app.use('/api/sister-concerns', sisterConcernRoutes);
+app.use('/api/projects', projectRoutes);
 
 
 
