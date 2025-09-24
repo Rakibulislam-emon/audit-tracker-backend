@@ -50,3 +50,50 @@ export const getAuditFindings = async (req, res) => {
     res.status(500).json({ message: 'Server error fetching audit findings' });
   }
 };
+
+export const updateAuditFinding = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, description, riskRating, status, recommendation } = req.body;
+
+    const finding = await AuditFinding.findById(id);
+    if (!finding) {
+      return res.status(404).json({ message: 'Audit Finding not found' });
+    }
+
+    // Only allow status update to 'resolved' or 'closed' if user is authorized
+    if (status && !['open', 'in_progress', 'resolved', 'closed'].includes(status)) {
+      return res.status(400).json({ message: 'Invalid status value' });
+    }
+
+    // Update fields
+    if (title !== undefined) finding.title = title;
+    if (description !== undefined) finding.description = description;
+    if (riskRating !== undefined) finding.riskRating = riskRating;
+    if (recommendation !== undefined) finding.recommendation = recommendation;
+    if (status !== undefined) finding.status = status;
+
+    await finding.save();
+    res.json(finding);
+  } catch (error) {
+    console.error('Update AuditFinding error:', error);
+    res.status(500).json({ message: 'Server error updating audit finding' });
+  }
+};
+
+export const closeAuditFinding = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const finding = await AuditFinding.findById(id);
+    if (!finding) {
+      return res.status(404).json({ message: 'Audit Finding not found' });
+    }
+
+    finding.status = 'closed';
+    await finding.save();
+    res.json({ ...finding.toObject(), message: 'Finding closed successfully' });
+  } catch (error) {
+    console.error('Close AuditFinding error:', error);
+    res.status(500).json({ message: 'Server error closing audit finding' });
+  }
+};
