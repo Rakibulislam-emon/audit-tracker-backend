@@ -1,42 +1,29 @@
 import express from "express";
-// user.js
-import User from "../models/User.js";
+import { loginUser, registerUser } from "../controllers/userController.js";
+import auth from "../middleware/auth.js";
+
 const router = express.Router();
 
 // @desc    Register a new user
 // @route   POST /api/users/register
+// @access  only admins
+router.post("/register", registerUser);
+// @desc    Login user and get token
+// @route   POST /api/users/login
 // @access  Public
+router.post("/login", loginUser);
 
-router.post("/register", async (req, res) => {
-  const { name, email, password, role } = req.body;
-  try {
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res
-        .status(400)
-        .json({ message: "User already exists with this email" });
-    }
-    // create new user
-    const user = new User({
-      name,
-      email,
-      password,
-      role: role || "auditor",
-    });
-    await user.save();
-    // send success response without password
-
-    res.status(201).json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      message: "User registered successfully",
-    });
-  } catch (error) {
-    console.log(" Registration error:", error.message);
-    res.status(500).json({ message: "Server error during Registration" });
-  }
+// @desc    Get current user
+// @route   GET /api/users/me
+// @access  Private
+// 🔒 Protected route: Get current user (requires valid JWT)
+router.get("/me", auth, (req, res) => {
+  res.json({
+    _id: req.user._id,
+    name: req.user.name,
+    email: req.user.email,
+    role: req.user.role,
+  });
 });
 
 export default router;
