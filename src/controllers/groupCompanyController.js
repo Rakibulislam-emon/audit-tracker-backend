@@ -21,6 +21,9 @@ const createGroupCompany = async (req, res) => {
         const company = await GroupCompany.create({name,description});
         res.status(201).json(company);
     } catch (error) {
+        if(error.code === 11000){
+            return res.status(400).json({message:"Group Company with this name already exists"});
+        }
         console.error("Error creating group company:", error.message);
         res.status(500).json({message:"Server error"});
     }

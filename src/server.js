@@ -7,6 +7,9 @@ import connectDB from "./config/db.js";
 // import routes
 import  userRoutes from "./routes/userRoutes.js"
 import groupCompanyRoutes from "./routes/groupCompanyRoutes.js"
+import sisterConcernRoutes from './routes/sisterConcernRoutes.js';
+
+
 const port = config.port;
 const app = express();
 // Middleware
@@ -17,6 +20,7 @@ connectDB();
 // Routes
 app.use("/api/users", userRoutes);
 app.use("/api/group-companies",groupCompanyRoutes)
+app.use('/api/sister-concerns', sisterConcernRoutes);
 
 
 

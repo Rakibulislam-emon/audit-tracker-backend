@@ -1,9 +1,8 @@
 import express from "express";
-
 import {
-  createGroupCompany,
-  getGroupCompanies,
-} from "../controllers/groupCompanyController.js";
+  createSisterConcern,
+  getSisterConcerns,
+} from "../controllers/sisterConcernController.js";
 import auth from "../middleware/auth.js";
 const router = express.Router();
 
@@ -17,7 +16,7 @@ router
         .json({ message: "access denied, only admins can register new users" });
     }
     // if authorized, proceed to controller
-    createGroupCompany(req, res, next);
+    createSisterConcern(req, res, next);
   })
   .get(auth, (req, res, next) => {
     // check role
@@ -27,7 +26,6 @@ router
         .json({ message: "access denied, only admins can register new users" });
     }
     // if authorized, proceed to controller
-    getGroupCompanies(req, res, next);
+    getSisterConcerns(req, res, next);
   });
-
 export default router;
